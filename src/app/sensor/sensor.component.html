@@ -1,0 +1,28 @@
+<div>
+    <!-- sensor status  -->
+    <div *ngIf="sensorStatus" class="alert alert-success" role="alert">
+        Connection to Sensor status  : <b>ONLINE</b>
+    </div>
+    <div *ngIf="!sensorStatus" class="alert alert-danger" role="alert">
+        Connection to Sensor status : <b>OFFLINE</b>         
+        <button type="button" class="btn btn-secondary ms-4" (click)="refresh()">Refresh</button>
+
+    </div>
+
+    <div *ngIf="sensorStatus" class="text-center">
+        <div *ngIf="collectingData" class="align-middle">
+            <span class="spinner-grow text-success align-middle ps-2" role="status">
+            <!-- <span class="sr-only">Loading...</span> -->
+            </span>
+            <span class="align-middle ps-2">
+                Currently collecting data 
+            </span>
+        </div>
+        <div *ngIf="!collectingData">Not collecting data</div>
+        <!-- <div class="progress" style="width: 200px">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+        </div> -->
+        <button type="button" class="btn btn-success m-1" (click)="start()">Start</button>
+        <button type="button" class="btn btn-danger m-1"(click)="stop()">Stop</button>
+    </div>
+</div>
