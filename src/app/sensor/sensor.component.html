@@ -1,11 +1,15 @@
 <div>
     <!-- sensor status  -->
-    <div *ngIf="sensorStatus" class="alert alert-success" role="alert">
-        Connection to Sensor status  : <b>ONLINE</b>
-    </div>
-    <div *ngIf="!sensorStatus" class="alert alert-danger" role="alert">
-        Connection to Sensor status : <b>OFFLINE</b>         
+    <!-- <div *ngIf="sensorStatus" class="alert alert-success text-center" role="alert">
+        Connection : <b>ONLINE</b>
         <button type="button" class="btn btn-secondary ms-4" (click)="refresh()">Refresh</button>
+    </div> -->
+    <div class="alert text-center align-middle" role="alert" 
+        [ngClass]="sensorStatus ? 'alert-success' : 'alert-danger'">
+        <span *ngIf="loading" class="spinner-border align-middle me-2" role="status"></span>
+         Connection : <b>{{sensorStatus ? 'ONLINE': 'OFFLINE'}}</b>         
+        <button type="button" class="btn btn-secondary ms-4" (click)="refresh()">Refresh</button>
+        <!-- <button type="button" class="btn btn-secondary ms-2" (click)="refresh()">Auto Refresh</button> -->
 
     </div>
 
