@@ -6,47 +6,60 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './sensor.component.html',
   styleUrls: ['./sensor.component.scss']
 })
+
+// class Sensor{
+//   url: string
+
+// }
+
 export class SensorComponent implements OnInit {
   sensorStatus = false
   collectingData = true
   loading = false
+  espIp = '192.168.0.137'
   constructor(
     private http: HttpClient
   ) { }
 
   ngOnInit(): void {
     this.loading = true
-    this.http.get('').subscribe((payload)=>{
+    this.http.get(`http://${this.espIp}/`, {responseType: 'text'}).subscribe((payload)=>{
       this.loading = false
-      console.log('sucess')
       this.sensorStatus = true
+      console.log('sucess')
+      if(payload == 'true')  this.collectingData = true
+      else if(payload == 'false')  this.collectingData = false
     }, (error) => {
       this.loading = false
-      console.log('error')
-      this.sensorStatus = true
+      console.log(error)
+      this.sensorStatus = false
     })
   }
 
   start(){
     this.loading = true
-    this.http.get('').subscribe((payload)=>{
+    this.http.get(`http://${this.espIp}/start`, {responseType: 'text'}).subscribe((payload)=>{
       this.loading = false
-      console.log('sucess')
       this.sensorStatus = true
+      console.log('sucess')
+      if(payload == 'true')  this.collectingData = true
+      else if(payload == 'false')  this.collectingData = false
     }, (error) => {
-      console.log('error')
       this.loading = false
-      this.sensorStatus = false
+      console.log('error')
+
       this.collectingData = true
     })
   }
   
   stop(){
     this.loading = true
-    this.http.get('').subscribe((payload)=>{
+    this.http.get(`http://${this.espIp}/stop`, {responseType: 'text'}).subscribe((payload)=>{
       this.loading = false
-      console.log('sucess')
       this.sensorStatus = true
+      console.log('sucess')
+      if(payload == 'true')  this.collectingData = true
+      else if(payload == 'false')  this.collectingData = false
       
     }, (error) => {
       this.loading = false
@@ -55,6 +68,7 @@ export class SensorComponent implements OnInit {
       this.collectingData = false
     })
   }
+
   refresh(){
     this.ngOnInit()
   }
