@@ -164,15 +164,18 @@ export class TableComponent implements OnInit {
       series: [{
           name: 'Temperature',
           // yAxis: 1,
+          color: 'red',
           data: this.tempData
         }, {
           name: 'Smoke',
           data: this.smokeData,
+          color: 'grey',
           yAxis: 2,
           type: 'column'
           
         }, {
           name: 'SonicWave',
+            color: 'blue',
           yAxis: 1,
           data: this.sonicwaveData,
       }],
