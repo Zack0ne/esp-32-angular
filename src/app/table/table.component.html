@@ -9,7 +9,7 @@
         <span *ngIf="loading" class="spinner-border align-middle me-2" role="status"></span>
         Backend Connection : <b>{{sensorStatus ? 'ONLINE': 'OFFLINE'}}</b>         
         <div>
-            <input class='mt-2' type="text" [(ngModel)]="espIp">
+            <input class='mt-2' type="text" [(ngModel)]="backendIp">
             <button type="button" class="btn btn-secondary ms-2" (click)="refresh()">Refresh</button>
         </div>
         <!-- <button type="button" class="btn btn-secondary ms-2" (click)="refresh()">Auto Refresh</button> -->

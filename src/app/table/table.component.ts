@@ -14,7 +14,7 @@ export class TableComponent implements OnInit {
   collectingData = true
   loading = false
   highchart: any
-  espIp = 'localhost:3100'
+  backendIp = 'localhost:3000'
   tempData: any[] = [];
   smokeData: any[] = [];
   sonicwaveData: any[] = [];
@@ -25,11 +25,15 @@ export class TableComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-  ) { }
+  ) { 
+    if(localStorage.getItem("backendIp")){
+      this.backendIp = JSON.parse(localStorage.getItem("backendIp") as string)
+    }
+  }
 
   ngOnInit(): void {
     this.loading = true
-    this.http.get(`http://${this.espIp}/`, {responseType: 'text'}).subscribe((payload)=>{
+    this.http.get(`http://${this.backendIp}/`, {responseType: 'text'}).subscribe((payload)=>{
       this.loading = false
       this.sensorStatus = true
       console.log('sucess')
@@ -45,6 +49,7 @@ export class TableComponent implements OnInit {
   }
 
   refresh(){
+    localStorage.setItem("backendIp", JSON.stringify(this.backendIp));
     this.ngOnInit()
   }
 
@@ -52,11 +57,12 @@ export class TableComponent implements OnInit {
     this.tempData = []
     this.smokeData = []
     this.sonicwaveData = []
-    this.http.get(`http://${this.espIp}/sensor`).subscribe((payload:any)=>{
+    this.http.get(`http://${this.backendIp}/sensor`).subscribe((payload:any)=>{
       payload.forEach((element:any) => {
-        this.tempData.push([element.timestamp, element.temp_value])
-        this.smokeData.push([element.timestamp, element.smoke_value])
-        this.sonicwaveData.push([element.timestamp, element.ultrasonic_value])
+        let timestamp:number = ((new Date(element.timestamp)).getTime() - (new Date().getTimezoneOffset()*60*1000))
+        this.tempData.push([timestamp, element.temp_value])
+        this.smokeData.push([timestamp, element.smoke_value])
+        this.sonicwaveData.push([timestamp, element.ultrasonic_value])
       });
       console.log(this.tempData, this.smokeData, this.sonicwaveData)
       // this.highchart.addSeries() 
@@ -124,11 +130,21 @@ export class TableComponent implements OnInit {
         opposite: true
     }],
   
-      xAxis: {
-          accessibility: {
-              rangeDescription: 'Range: 2010 to 2017'
-          }
+    xAxis: {
+			title: {
+				text: 'Hour'
+			},
+			type: 'datetime',
+			dateTimeLabelFormats: {
+					hour: '%H:%M' 
       },
+			// labels: {
+			// 	rotation: 315,
+			// 	formatter: function() {
+			// 		return this.value; // clean, unformatted number for year
+			// 	}
+			// }
+		},
   
       legend: {
           layout: 'vertical',

@@ -16,10 +16,14 @@ export class SensorComponent implements OnInit {
   sensorStatus = false
   collectingData = true
   loading = false
-  espIp = '192.168.0.137'
+  espIp:string | null = '192.168.0.137'
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    if(localStorage.getItem("espIp")){
+      this.espIp = JSON.parse(localStorage.getItem("espIp") as string)
+    }
+   }
 
   ngOnInit(): void {
     this.loading = true
@@ -70,6 +74,7 @@ export class SensorComponent implements OnInit {
   }
 
   refresh(){
+    localStorage.setItem("espIp", JSON.stringify(this.espIp));
     this.ngOnInit()
   }
 }
