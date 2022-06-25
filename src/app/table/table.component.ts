@@ -53,6 +53,10 @@ export class TableComponent implements OnInit {
     this.ngOnInit()
   }
 
+  filteFx(){
+    this.injectData()
+  }
+
   injectData(filter:number = this.filter){ //in minute
     this.tempData = []
     this.smokeData = []
@@ -67,7 +71,6 @@ export class TableComponent implements OnInit {
         this.sonicwaveData.push([timestamp, element.ultrasonic_value])
       });
       console.log(this.tempData, this.smokeData, this.sonicwaveData)
-      // this.highchart.addSeries() 
       this.initHighchart()
     })
   }
@@ -75,14 +78,16 @@ export class TableComponent implements OnInit {
   initHighchart(){
     let option: any = {
       chart:{
-        renderTo: 'highchart-sensor'
-      },
+        renderTo: 'highchart-sensor',
+        zoomType: 'x',
+        // marginBottom: 100
+      },    
       title: {
           text: 'Sensor Datas'
       },
   
       subtitle: {
-          text: 'Chart'
+          text: 'Click and drag in the plot area to zoom in : Pinch the chart to zoom in'
       },
   
       yAxis: [{ // Primary yAxis
@@ -118,13 +123,13 @@ export class TableComponent implements OnInit {
     }, { // Tertiary yAxis
         gridLineWidth: 0,
         title: {
-            text: 'Smoke',
+            text: 'IR',
             style: {
                 color: 'gray'
             }
         },
         labels: {
-            format: '{value} smoke',
+            format: '{value} on/off',
             style: {
                 color: 'gray'
             }
@@ -149,9 +154,16 @@ export class TableComponent implements OnInit {
 		},
   
       legend: {
-          layout: 'vertical',
-          align: 'right',
-          verticalAlign: 'middle'
+          // layout: 'horizontal',
+          align: 'center',
+          // verticalAlign: 'botttom',
+          floating: false,
+          // legend: {
+          //   align: 'center',
+          //   verticalAlign: 'bottom',
+            // x: 0,
+            // y: 0,
+          // },
       },
   
       plotOptions: {
@@ -169,7 +181,7 @@ export class TableComponent implements OnInit {
           color: 'red',
           data: this.tempData
         }, {
-          name: 'Smoke',
+          name: 'IR',
           data: this.smokeData,
           color: 'grey',
           yAxis: 2,
