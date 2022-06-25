@@ -18,7 +18,7 @@ export class TableComponent implements OnInit {
   tempData: any[] = [];
   smokeData: any[] = [];
   sonicwaveData: any[] = [];
-
+  filter:number = 1
   // this.tempDataChart
   // this.smokeDataChart
   // this.sonicwaveChart
@@ -53,13 +53,15 @@ export class TableComponent implements OnInit {
     this.ngOnInit()
   }
 
-  injectData(){
+  injectData(filter:number = this.filter){ //in minute
     this.tempData = []
     this.smokeData = []
     this.sonicwaveData = []
+    const timeLimit:number = ((new Date()).getTime()) - (filter*60*1000) - (new Date().getTimezoneOffset()*60*1000)
     this.http.get(`http://${this.backendIp}/sensor`).subscribe((payload:any)=>{
       payload.forEach((element:any) => {
         let timestamp:number = ((new Date(element.timestamp)).getTime() - (new Date().getTimezoneOffset()*60*1000))
+        if(timeLimit > timestamp) return
         this.tempData.push([timestamp, element.temp_value])
         this.smokeData.push([timestamp, element.smoke_value])
         this.sonicwaveData.push([timestamp, element.ultrasonic_value])

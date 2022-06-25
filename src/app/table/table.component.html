@@ -16,6 +16,17 @@
 
     </div>
 </div>
+<div class="card p-2 center-card align-middle text-center ">
+    <div  class='align-middle'>
+        Last
+        <input class='mt-2' type="number" [(ngModel)]="filter"  style="width:50px">
+        Minute
+        <button type="button" class="btn btn-secondary ms-2" (click)="refresh()">Filter</button>
+        <div>
+            (0 to call all data)
+        </div>
+    </div>
+</div>
 <div id="highchart-sensor"></div>
 
 
